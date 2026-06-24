@@ -60,8 +60,8 @@ def make_academic_pdf():
         'DocTitle',
         parent=styles['Normal'],
         fontName=FONT_NAME_BOLD,
-        fontSize=20,
-        leading=26,
+        fontSize=18,
+        leading=24,
         textColor=colors.HexColor('#1d3557'),
         alignment=1,
         spaceAfter=15
@@ -83,7 +83,7 @@ def make_academic_pdf():
         parent=styles['Normal'],
         fontName=FONT_NAME_BOLD,
         fontSize=13,
-        leading=18,
+        leading=17,
         textColor=colors.HexColor('#1d3557'),
         spaceBefore=14,
         spaceAfter=8,
@@ -184,20 +184,21 @@ def make_academic_pdf():
         "gồm 5 thành viên để xây dựng ứng dụng trực quan hóa 9 thuật toán đồ thị cơ bản và nâng cao của môn học Cấu trúc rời rạc. "
         "Điểm đặc biệt của dự án này là sự phân chia công bằng, trong đó cả 5 thành viên đều trực tiếp lập trình cả phần thuật toán "
         "thuần (Backend), thuật toán hoạt họa (Generator) và lập trình điều khiển giao diện (GUI) liên quan đến phần việc của mình. "
-        "Tài liệu bao gồm cơ sở toán học chi tiết, mã nguồn khung định hướng (Skeleton Code) cho từng vai trò, tiến độ thực hiện "
-        "và các tiêu chuẩn chất lượng (DoD) để đảm bảo mã nguồn đồng nhất, sạch sẽ."
+        "Tài liệu bao gồm cơ sở toán học chi tiết (dưới dạng các ký hiệu toán học Unicode chuẩn hóa để hiển thị trực quan), "
+        "mã nguồn khung định hướng (Skeleton Code) cho từng vai trò, tiến độ thực hiện và các tiêu chuẩn chất lượng để đảm bảo "
+        "mã nguồn đồng nhất, sạch sẽ."
     )
     story.append(Paragraph(intro_text, body_style))
     story.append(Spacer(1, 20))
     
     toc_text = (
         "<b>MỤC LỤC TÀI LIỆU:</b><br/>"
-        "1. Tổng quan kiến trúc hệ thống (Trang 2)<br/>"
-        "2. Phân tích toán học & Thuật toán chi tiết (Trang 2-4)<br/>"
-        "3. Bảng phân chia công việc nhóm (Trang 5)<br/>"
-        "4. Chi tiết phần việc và Skeleton Code cho từng thành viên (Trang 5-9)<br/>"
-        "5. Quy trình phối hợp và thứ tự triển khai (Trang 10)<br/>"
-        "6. Tiêu chuẩn hoàn thành và Clean Code (Trang 10)"
+        "I. Tổng quan kiến trúc hệ thống (Trang 2)<br/>"
+        "II. Phân tích toán học & Giải thuật chi tiết (Trang 2-4)<br/>"
+        "III. Bảng phân chia công việc nhóm (Trang 5)<br/>"
+        "IV. Chi tiết phần việc và Skeleton Code cho từng thành viên (Trang 5-9)<br/>"
+        "V. Quy trình phối hợp và thứ tự triển khai (Trang 10)<br/>"
+        "VI. Tiêu chuẩn hoàn thành và Clean Code (Trang 10)"
     )
     story.append(Paragraph(toc_text, body_style))
     story.append(PageBreak())
@@ -205,7 +206,7 @@ def make_academic_pdf():
     # ----------------------------------------------------
     # PAGE 2: SYSTEM OVERVIEW & MATH ANALYSIS (PART 1)
     # ----------------------------------------------------
-    story.append(Paragraph("1. TỔNG QUAN KIẾN TRÚC HỆ THỐNG", h1_style))
+    story.append(Paragraph("I. TỔNG QUAN KIẾN TRÚC HỆ THỐNG", h1_style))
     story.append(Paragraph(
         "Hệ thống áp dụng mô hình phân tách mối quan tâm (Separation of Concerns) nhằm đảm bảo code thuật toán độc lập hoàn toàn "
         "với phần giao diện hiển thị, tạo điều kiện thuận lợi cho việc tái sử dụng mã nguồn:<br/>"
@@ -215,20 +216,20 @@ def make_academic_pdf():
         body_style
     ))
     
-    story.append(Paragraph("2. PHÂN TÍCH TOÁN HỌC & GIẢI THUẬT CHI TIẾT", h1_style))
+    story.append(Paragraph("II. PHÂN TÍCH TOÁN HỌC & GIẢI THUẬT CHI TIẾT", h1_style))
     
     story.append(Paragraph("2.1. Duyệt đồ thị (BFS & DFS)", h2_style))
     story.append(Paragraph(
         "Duyệt đồ thị là quá trình đi qua tất cả các đỉnh của đồ thị một cách hệ thống:<br/>"
-        "• <b>BFS (Breadth-First Search - Duyệt rộng):</b> Sử dụng cấu trúc dữ liệu Hàng đợi <b>Queue (FIFO)</b>. Xuất phát từ đỉnh nguồn $S$, loang đều ra xung quanh để duyệt các đỉnh có khoảng cách $k$ trước khi chuyển sang khoảng cách $k+1$. Thích hợp để tìm đường đi ngắn nhất trên đồ thị không trọng số. Độ phức tạp: $O(V+E)$ thời gian, $O(V)$ không gian.<br/>"
-        "• <b>DFS (Depth-First Search - Duyệt sâu):</b> Sử dụng cấu trúc dữ liệu Ngăn xếp <b>Stack (LIFO)</b> (hoặc đệ quy hệ thống). Thuật toán đi sâu tối đa theo từng nhánh cho tới khi không đi được nữa thì thực hiện quay lui (Backtracking). Độ phức tạp: $O(V+E)$ thời gian, $O(V)$ không gian.",
+        "• <b>BFS (Breadth-First Search - Duyệt rộng):</b> Sử dụng cấu trúc dữ liệu Hàng đợi <b>Queue (FIFO)</b>. Xuất phát từ đỉnh nguồn s, loang đều ra xung quanh để duyệt các đỉnh có khoảng cách k trước khi chuyển sang khoảng cách k+1. Thích hợp để tìm đường đi ngắn nhất trên đồ thị không trọng số. Độ phức tạp: O(V + E) thời gian, O(V) không gian.<br/>"
+        "• <b>DFS (Depth-First Search - Duyệt sâu):</b> Sử dụng cấu trúc dữ liệu Ngăn xếp <b>Stack (LIFO)</b> (hoặc đệ quy hệ thống). Thuật toán đi sâu tối đa theo từng nhánh cho tới khi không đi được nữa thì thực hiện quay lui (Backtracking). Độ phức tạp: O(V + E) thời gian, O(V) không gian.",
         body_style
     ))
     
     story.append(Paragraph("2.2. Kiểm tra đồ thị hai phía (Bipartite Graph Check)", h2_style))
     story.append(Paragraph(
-        "<b>Định nghĩa toán học:</b> Một đồ thị vô hướng $G = (V, E)$ là đồ thị hai phía nếu tồn tại phân hoạch $V = V_1 \cup V_2$ với $V_1 \cap V_2 = \emptyset$ sao cho mọi cạnh $(u, v) \in E$ đều kết nối một đỉnh thuộc $V_1$ với một đỉnh thuộc $V_2$.<br/>"
-        "<b>Giải thuật:</b> Sử dụng thuật toán tô màu đồ thị bằng 2 màu (0 và 1). Khởi tạo tất cả đỉnh chưa có màu. Chọn một đỉnh tô màu 0. Sử dụng DFS hoặc BFS loang ra các đỉnh kề: nếu đỉnh kề chưa tô màu, tô màu ngược lại; nếu đỉnh kề đã tô màu và trùng màu với đỉnh đang xét, kết luận đồ thị chứa chu trình lẻ (không là đồ thị hai phía) và truy vết ngược qua mảng cha <code>parent</code> để xuất chu trình lẻ làm minh chứng.",
+        "<b>Định nghĩa toán học:</b> Một đồ thị vô hướng G = (V, E) là đồ thị hai phía nếu tồn tại phân hoạch V = V1 ∪ V2 với V1 ∩ V2 = ∅ sao cho mọi cạnh (u, v) ∈ E đều kết nối một đỉnh thuộc V1 với một đỉnh thuộc V2.<br/>"
+        "<b>Giải thuật:</b> Sử dụng thuật toán tô màu đồ thị bằng 2 màu (0 và 1). Khởi tạo tất cả đỉnh chưa có màu. Chọn một đỉnh tô màu 0. Sử dụng DFS hoặc BFS loang ra các đỉnh kề: nếu đỉnh kề chưa tô màu, tô màu ngược lại (tô màu 1 - color[u]); nếu đỉnh kề đã tô màu và trùng màu với đỉnh đang xét, kết luận đồ thị chứa chu trình lẻ (không là đồ thị hai phía) và truy vết ngược qua mảng cha <code>parent</code> để xuất chu trình lẻ làm minh chứng.",
         body_style
     ))
     story.append(PageBreak())
@@ -238,17 +239,18 @@ def make_academic_pdf():
     # ----------------------------------------------------
     story.append(Paragraph("2.3. Tìm đường đi ngắn nhất (Dijkstra)", h2_style))
     story.append(Paragraph(
-        "<b>Định nghĩa bài toán:</b> Cho đồ thị có trọng số không âm $G = (V, E, w)$ với $w(u, v) \ge 0$, tìm đường đi ngắn nhất từ đỉnh nguồn $S$ tới tất cả các đỉnh khác.<br/>"
-        "<b>Thuật toán:</b> Giải thuật tham lam (Greedy). Duy trì mảng khoảng cách tạm thời $d[v]$ từ $S$. Ở mỗi bước lặp, chọn đỉnh $u$ chưa cố định có khoảng cách $d[u]$ nhỏ nhất, cố định khoảng cách này. Thực hiện nới lỏng (Relaxation) cho tất cả các đỉnh kề $v$ chưa cố định của $u$: nếu $d[u] + w(u, v) < d[v]$, cập nhật $d[v] = d[u] + w(u, v)$ và ghi nhận $prev[v] = u$.<br/>"
-        "<b>Độ phức tạp:</b> Sử dụng Hàng đợi ưu tiên (Binary Min-Heap) giúp thuật toán đạt hiệu năng $O(E \log V)$ thời gian và $O(V)$ không gian.",
+        "<b>Định nghĩa bài toán:</b> Cho đồ thị có trọng số không âm G = (V, E, w) với w(u, v) ≥ 0, tìm đường đi ngắn nhất từ đỉnh nguồn S tới tất cả các đỉnh khác.<br/>"
+        "<b>Thuật toán:</b> Giải thuật tham lam (Greedy). Duy trì mảng khoảng cách tạm thời d[v] từ S. Ở mỗi bước lặp, chọn đỉnh u chưa cố định có khoảng cách d[u] nhỏ nhất, cố định khoảng cách này. Thực hiện nới lỏng (Relaxation) cho tất cả các đỉnh kề v chưa cố định của u: nếu d[u] + w(u, v) &lt; d[v], cập nhật d[v] = d[u] + w(u, v) và ghi nhận prev[v] = u.<br/>"
+        "Công thức nới lỏng: d[v] = min(d[v], d[u] + w(u, v))<br/>"
+        "<b>Độ phức tạp:</b> Sử dụng Hàng đợi ưu tiên (Binary Min-Heap) giúp thuật toán đạt hiệu năng O(E log V) thời gian và O(V) không gian.",
         body_style
     ))
     
     story.append(Paragraph("2.4. Cây khung nhỏ nhất MST (Kruskal & Prim)", h2_style))
     story.append(Paragraph(
-        "<b>Định nghĩa bài toán:</b> Cho đồ thị vô hướng liên thông có trọng số $G = (V, E, w)$. Tìm cây con chứa tất cả đỉnh của đồ thị có đúng $|V|-1$ cạnh sao cho tổng trọng số các cạnh là nhỏ nhất.<br/>"
-        "• <b>Thuật toán Kruskal (Duyệt theo cạnh):</b> Sắp xếp danh sách cạnh theo trọng số tăng dần. Duyệt qua từng cạnh: nếu hai đỉnh của cạnh nằm ở hai thành phần liên thông khác nhau, kết nạp cạnh đó vào MST. Sử dụng cấu trúc dữ liệu <b>Disjoint Set Union (DSU)</b> với kỹ thuật nén đường đi (Path Compression) để kiểm tra chu trình và hợp nhất tập hợp với độ phức tạp gần như $O(1)$. Tổng độ phức tạp: $O(E \log E)$ thời gian (do chi phí sắp xếp cạnh).<br/>"
-        "• <b>Thuật toán Prim (Duyệt theo đỉnh):</b> Bắt đầu từ một đỉnh gốc, xây dựng cây khung bằng cách liên tục kết nạp cạnh có trọng số nhỏ nhất nối từ một đỉnh đã nằm trong cây ra một đỉnh chưa nằm trong cây. Sử dụng Min-Heap để quản lý các cạnh ứng viên. Tổng độ phức tạp: $O(E \log V)$ thời gian.",
+        "<b>Định nghĩa bài toán:</b> Cho đồ thị vô hướng liên thông có trọng số G = (V, E, w). Tìm cây con chứa tất cả đỉnh của đồ thị có đúng V - 1 cạnh sao cho tổng trọng số các cạnh là nhỏ nhất.<br/>"
+        "• <b>Thuật toán Kruskal (Duyệt theo cạnh):</b> Sắp xếp danh sách cạnh theo trọng số tăng dần. Duyệt qua từng cạnh: nếu hai đỉnh của cạnh nằm ở hai thành phần liên thông khác nhau, kết nạp cạnh đó vào MST. Sử dụng cấu trúc dữ liệu <b>Disjoint Set Union (DSU)</b> với kỹ thuật nén đường đi (Path Compression) để kiểm tra chu trình và hợp nhất tập hợp với độ phức tạp gần như O(1). Tổng độ phức tạp: O(E log E) thời gian (do chi phí sắp xếp cạnh).<br/>"
+        "• <b>Thuật toán Prim (Duyệt theo đỉnh):</b> Bắt đầu từ một đỉnh gốc, xây dựng cây khung bằng cách liên tục kết nạp cạnh có trọng số nhỏ nhất nối từ một đỉnh đã nằm trong cây ra một đỉnh chưa nằm trong cây. Sử dụng Min-Heap để quản lý các cạnh ứng viên. Tổng độ phức tạp: O(E log V) thời gian.",
         body_style
     ))
     story.append(PageBreak())
@@ -258,17 +260,17 @@ def make_academic_pdf():
     # ----------------------------------------------------
     story.append(Paragraph("2.5. Luồng cực đại (Ford-Fulkerson / Edmonds-Karp)", h2_style))
     story.append(Paragraph(
-        "<b>Bài toán mạng luồng:</b> Cho mạng luồng $G = (V, E)$ với dung lượng cạnh $c(u, v) \ge 0$, đỉnh nguồn $s$, và đỉnh đích $t$. Tìm luồng có giá trị lớn nhất từ $s$ đến $t$ thỏa mãn ràng buộc dung lượng ($0 \le f(u, v) \le c(u, v)$) và bảo toàn luồng tại các đỉnh trung gian.<br/>"
-        "<b>Thuật toán Edmonds-Karp:</b> Là một cải tiến của Ford-Fulkerson. Thuật toán liên tục tìm đường tăng luồng ngắn nhất (ít cạnh nhất) bằng cách duyệt **BFS** trên đồ thị dư $G_f$. Tìm dung lượng dư nhỏ nhất trên đường đi này ($\Delta f = \text{bottleneck}$). Tăng luồng thực tế dọc theo đường tăng luồng thêm $\Delta f$ (tăng luồng cạnh xuôi, giảm luồng cạnh ngược trên đồ thị dư). Thuật toán dừng lại khi không còn đường đi từ $s$ đến $t$ trên đồ thị dư.<br/>"
-        "<b>Độ phức tạp:</b> Đảm bảo số lần lặp tối đa và kết thúc trong $O(V E^2)$ thời gian.",
+        "<b>Bài toán mạng luồng:</b> Cho mạng luồng G = (V, E) với dung lượng cạnh c(u, v) ≥ 0, đỉnh nguồn s, và đỉnh đích t. Tìm luồng có giá trị lớn nhất từ s đến t thỏa mãn ràng buộc dung lượng (0 ≤ f(u, v) ≤ c(u, v)) và bảo toàn luồng tại các đỉnh trung gian.<br/>"
+        "<b>Thuật toán Edmonds-Karp:</b> Là một cải tiến của Ford-Fulkerson. Thuật toán liên tục tìm đường tăng luồng ngắn nhất (ít cạnh nhất) bằng cách duyệt **BFS** trên đồ thị dư G_f. Tìm dung lượng dư nhỏ nhất trên đường đi này (Δf = bottleneck). Tăng luồng thực tế dọc theo đường tăng luồng thêm Δf (tăng luồng cạnh xuôi, giảm luồng cạnh ngược trên đồ thị dư). Thuật toán dừng lại khi không còn đường đi từ s đến t trên đồ thị dư.<br/>"
+        "<b>Độ phức tạp:</b> Đảm bảo số lần lặp tối đa và kết thúc trong O(V E^2) thời gian.",
         body_style
     ))
     
     story.append(Paragraph("2.6. Chu trình & Đường đi Euler (Fleury & Hierholzer)", h2_style))
     story.append(Paragraph(
         "<b>Định lý tồn tại Euler:</b> Đồ thị vô hướng liên thông có chu trình Euler khi tất cả các đỉnh đều có bậc chẵn; có đường đi Euler khi có đúng 0 hoặc 2 đỉnh bậc lẻ.<br/>"
-        "• <b>Thuật toán Fleury:</b> Đi tham lam từ đỉnh xuất phát. Ở mỗi bước chọn cạnh đi tiếp chưa viếng thăm sao cho tránh đi qua cạnh cầu (bridge) của đồ thị con còn lại, trừ khi không còn lựa chọn nào khác. Độ phức tạp thời gian: $O(E^2)$ do mỗi bước phải kiểm tra cầu bằng cách duyệt đồ thị phụ.<br/>"
-        "• <b>Thuật toán Hierholzer:</b> Khởi hành từ đỉnh gốc, di chuyển tự do qua các cạnh chưa duyệt cho đến khi quay về đỉnh xuất phát tạo thành một chu trình đơn, xóa các cạnh đã duyệt này khỏi đồ thị và đẩy lộ trình vào một Ngăn xếp (Stack). Nếu trên đường đi có các đỉnh vẫn còn cạnh chưa duyệt, ta tìm một chu trình con từ đỉnh đó và lồng ghép ngược lại vào đường đi ban đầu thông qua thao tác pop Stack. Độ phức tạp thời gian cực kỳ tối ưu: $O(E)$ vì mỗi cạnh chỉ bị duyệt đúng một lần.",
+        "• <b>Thuật toán Fleury:</b> Đi tham lam từ đỉnh xuất phát. Ở mỗi bước chọn cạnh đi tiếp chưa viếng thăm sao cho tránh đi qua cạnh cầu (bridge) của đồ thị con còn lại, trừ khi không còn lựa chọn nào khác. Độ phức tạp thời gian: O(E^2) do mỗi bước phải kiểm tra cầu bằng cách duyệt đồ thị phụ.<br/>"
+        "• <b>Thuật toán Hierholzer:</b> Khởi hành từ đỉnh gốc, di chuyển tự do qua các cạnh chưa duyệt cho đến khi quay về đỉnh xuất phát tạo thành một chu trình đơn, xóa các cạnh đã duyệt này khỏi đồ thị và đẩy lộ trình vào một Ngăn xếp (Stack). Nếu trên đường đi có các đỉnh vẫn còn cạnh chưa duyệt, ta tìm một chu trình con từ đỉnh đó và lồng ghép ngược lại vào đường đi ban đầu thông qua thao tác pop Stack. Độ phức tạp thời gian cực kỳ tối ưu: O(E) vì mỗi cạnh chỉ bị duyệt đúng một lần.",
         body_style
     ))
     story.append(PageBreak())
@@ -276,7 +278,7 @@ def make_academic_pdf():
     # ----------------------------------------------------
     # PAGE 5: TASK ALLOCATION & MEMBER 1 SKELETON
     # ----------------------------------------------------
-    story.append(Paragraph("3. BẢNG PHÂN CHIA CÔNG VIỆC NHÓM 5 NGƯỜI", h1_style))
+    story.append(Paragraph("III. BẢNG PHÂN CHIA CÔNG VIỆC NHÓM 5 NGƯỜI", h1_style))
     
     # Task assignment table
     headers = [
@@ -310,7 +312,7 @@ def make_academic_pdf():
         [
             Paragraph("<b>Thành viên 5</b>", table_cell_bold_style),
             Paragraph("Đường đi &<br/>Chu trình Euler", table_cell_style),
-            Paragraph("• Cài đặt giải thuật **Fleury** (duyệt kiểm tra và tránh các cạnh cầu - bridge).<br/>• Cài đặt giải thuật **Hierholzer** tối ưu $O(E)$ sử dụng cơ chế lưu trữ Stack.<br/>• Tích hợp mô phỏng bước đi của Fleury và cơ chế push/pop đỉnh vào Stack của Hierholzer lên GUI.", table_cell_style)
+            Paragraph("• Cài đặt giải thuật **Fleury** (duyệt kiểm tra và tránh các cạnh cầu - bridge).<br/>• Cài đặt giải thuật **Hierholzer** tối ưu O(E) sử dụng cơ chế lưu trữ Stack.<br/>• Tích hợp mô phỏng bước đi của Fleury và cơ chế push/pop đỉnh vào Stack của Hierholzer lên GUI.", table_cell_style)
         ]
     ]
     
@@ -326,11 +328,11 @@ def make_academic_pdf():
     story.append(t)
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("4. CHI TIẾT CODE PHẢI TRIỂN KHAI CHO TỪNG THÀNH VIÊN", h1_style))
+    story.append(Paragraph("IV. CHI TIẾT CODE PHẢI TRIỂN KHAI CHO TỪNG THÀNH VIÊN", h1_style))
     story.append(Paragraph("4.1. Thành viên 1: Mô-đun Conversions và BFS/DFS", h2_style))
     
     code_m1 = (
-        "# Tệp tin: utils/conversions.py\n"
+        "# Tep tin: utils/conversions.py\n"
         "def to_adjacency_matrix(nodes, edges, is_directed=False):\n"
         "    n = len(nodes)\n"
         "    matrix = [[0] * n for _ in range(n)]\n"
@@ -339,7 +341,7 @@ def make_academic_pdf():
         "        if not is_directed:\n"
         "            matrix[v][u] = w\n"
         "    return matrix\n\n"
-        "# Tệp tin: algorithms/pure/traversal.py\n"
+        "# Tep tin: algorithms/pure/traversal.py\n"
         "from collections import deque\n"
         "def bfs(graph, start):\n"
         "    visited, visited_set = [], {start}\n"
@@ -365,7 +367,7 @@ def make_academic_pdf():
     story.append(Paragraph("4.2. Thành viên 2: Thuật toán Dijkstra và Đồ thị hai phía", h2_style))
     
     code_m2 = (
-        "# Tệp tin: algorithms/pure/dijkstra.py\n"
+        "# Tep tin: algorithms/pure/dijkstra.py\n"
         "import heapq\n"
         "def dijkstra(graph, start):\n"
         "    dist = {node: float('inf') for node in graph}\n"
@@ -376,15 +378,15 @@ def make_academic_pdf():
         "        current_dist, u = heapq.heappop(pq)\n"
         "        if current_dist > dist[u]: continue\n"
         "        for v, weight in graph.get(u, []):\n"
-        "            if weight < 0: raise ValueError(\"Trọng số âm không hỗ trợ!\")\n"
+        "            if weight < 0: raise ValueError(\"Trong so am khong ho tro!\")\n"
         "            if current_dist + weight < dist[v]:\n"
         "                dist[v] = current_dist + weight\n"
         "                prev[v] = u\n"
         "                heapq.heappush(pq, (dist[v], v))\n"
         "    return dist, prev\n\n"
-        "# Tệp tin: algorithms/pure/bipartite.py\n"
+        "# Tep tin: algorithms/pure/bipartite.py\n"
         "def check_bipartite(graph):\n"
-        "    color = {} # Lưu đỉnh và màu của nó (0 hoặc 1)\n"
+        "    color = {} # Luu dinh va mau cua no (0 hoac 1)\n"
         "    parent = {}\n"
         "    for start_node in graph:\n"
         "        if start_node not in color:\n"
@@ -400,7 +402,7 @@ def make_academic_pdf():
         "                        stack.append((v, 1 - c))\n"
         "                        unvisited_found = True; break\n"
         "                    elif color[v] == color[u]:\n"
-        "                        # Phát hiện chu trình lẻ\n"
+        "                        # Phat hien chu trinh le\n"
         "                        cycle = [v, u]\n"
         "                        curr = u\n"
         "                        while curr in parent and curr != v:\n"
@@ -420,7 +422,7 @@ def make_academic_pdf():
     story.append(Paragraph("4.3. Thành viên 3: Cây khung nhỏ nhất MST (Prim và Kruskal)", h2_style))
     
     code_m3 = (
-        "# Tệp tin: algorithms/pure/kruskal.py\n"
+        "# Tep tin: algorithms/pure/kruskal.py\n"
         "def kruskal(node_count, edges):\n"
         "    parent = list(range(node_count))\n"
         "    def find(x):\n"
@@ -443,7 +445,7 @@ def make_academic_pdf():
         "            if len(mst) == node_count - 1:\n"
         "                break\n"
         "    return mst, total\n\n"
-        "# Tệp tin: algorithms/pure/prim.py\n"
+        "# Tep tin: algorithms/pure/prim.py\n"
         "import heapq\n"
         "def prim(node_count, graph, start=0):\n"
         "    visited = {start}\n"
@@ -473,7 +475,7 @@ def make_academic_pdf():
     story.append(Paragraph("4.4. Thành viên 4: Luồng cực đại Ford-Fulkerson (Edmonds-Karp)", h2_style))
     
     code_m4 = (
-        "# Tệp tin: algorithms/pure/max_flow.py\n"
+        "# Tep tin: algorithms/pure/max_flow.py\n"
         "from collections import deque\n"
         "def bfs_augmenting_path(graph, capacity, flow, s, t, parent):\n"
         "    visited = {s}\n"
@@ -528,13 +530,13 @@ def make_academic_pdf():
     story.append(Paragraph("4.5. Thành viên 5: Đường đi & Chu trình Euler (Fleury và Hierholzer)", h2_style))
     
     code_m5 = (
-        "# Tệp tin: algorithms/pure/hierholzer.py\n"
+        "# Tep tin: algorithms/pure/hierholzer.py\n"
         "def find_eulerian_path_or_circuit_hierholzer(graph):\n"
         "    adj = {u: {} for u in graph}\n"
         "    for u in graph:\n"
         "        for v, w in graph[u]:\n"
         "            adj[u][v] = adj[u].get(v, 0) + 1\n"
-        "    # Tìm đỉnh bậc lẻ để chọn điểm bắt đầu (nếu là đường đi Euler)\n"
+        "    # Tim dinh bac le de chon diem bat dau (neu la duong di Euler)\n"
         "    start_node = next(iter(graph))\n"
         "    degrees = {u: sum(adj[u].values()) for u in graph}\n"
         "    odd_nodes = [u for u in degrees if degrees[u] % 2 != 0]\n"
@@ -553,11 +555,11 @@ def make_academic_pdf():
         "        else:\n"
         "            path.append(stack.pop())\n"
         "    return path[::-1]\n\n"
-        "# Tệp tin: algorithms/pure/fleury.py\n"
-        "# (Để viết Fleury, Thành viên 5 cần định nghĩa thêm hàm kiểm tra cạnh cầu - bridge)\n"
+        "# Tep tin: algorithms/pure/fleury.py\n"
+        "# (De viet Fleury, Thanh vien 5 can dinh nghia them ham kiem tra canh cau - bridge)\n"
         "def is_bridge(u, v, graph):\n"
-        "    # Kiểm tra xem việc xóa cạnh (u, v) có làm mất tính liên thông hay không\n"
-        "    # Bằng cách chạy đếm số thành phần liên thông bằng DFS/BFS\n"
+        "    # Kiem tra xem viec xoa canh (u, v) co lam mat tinh lien thong hay khong\n"
+        "    # Bang cach chay dem so thanh phan lien thong bang DFS/BFS\n"
         "    pass"
     )
     story.append(Paragraph("Mã khung lập trình (Skeleton Code):", code_title_style))
@@ -567,7 +569,7 @@ def make_academic_pdf():
     # ----------------------------------------------------
     # PAGE 10: WORKFLOW & DOD
     # ----------------------------------------------------
-    story.append(Paragraph("5. QUY TRÌNH PHỐI HỢP & TIẾN ĐỘ THỰC HIỆN", h1_style))
+    story.append(Paragraph("V. QUY TRÌNH PHỐI HỢP & TIẾN ĐỘ THỰC HIỆN", h1_style))
     story.append(Paragraph(
         "Nhóm tuân thủ mô hình phát triển tích hợp liên tục (CI) theo 4 bước sau:<br/>"
         "1. <b>Viết giải thuật thuần trước:</b> Viết toàn bộ code trong thư mục <code>pure/</code> và chạy kiểm thử CLI. Đảm bảo thuật toán độc lập hoàn toàn với Tkinter.<br/>"
@@ -577,12 +579,12 @@ def make_academic_pdf():
         body_style
     ))
     
-    story.append(Paragraph("6. TIÊU CHUẨN HOÀN THÀNH & CLEAN CODE (DoD)", h1_style))
+    story.append(Paragraph("VI. TIÊU CHUẨN HOÀN THÀNH & CLEAN CODE (DoD)", h1_style))
     story.append(Paragraph(
         "Một phần việc được coi là hoàn thành 100% khi đáp ứng đầy đủ các tiêu chuẩn học thuật và lập trình sau:<br/>"
         "• <b>Chính xác tuyệt đối (Deterministic):</b> Các thuật toán duyệt hoặc chọn cạnh kề phải luôn thực hiện sắp xếp danh sách đỉnh kề theo nhãn tăng dần trước khi duyệt để khớp với kết quả giải tay lý thuyết.<br/>"
         "• <b>Mượt mà và Không đơ ứng dụng:</b> Hoạt họa chạy trên GUI phải sử dụng luồng generator tuần tự kết hợp hàm <code>after()</code> của Tkinter, tuyệt đối không được dùng vòng lặp vô hạn hay hàm <code>time.sleep()</code> trong luồng chính.<br/>"
-        "• <b>Chuẩn hóa Clean Code:</b> Đặt tên biến và hàm theo chuẩn PEP 8 (tiếng Anh rõ ràng). Bắt buộc phải viết docstring mô tả chi tiết kiểu dữ liệu đầu vào và đầu ra cho tất cả các hàm.<br/>"
+        "• <b>Chuần hóa Clean Code:</b> Đặt tên biến và hàm theo chuẩn PEP 8 (tiếng Anh rõ ràng). Bắt buộc phải viết docstring mô tả chi tiết kiểu dữ liệu đầu vào và đầu ra cho tất cả các hàm.<br/>"
         "• <b>Quản lý qua Git:</b> Từng thành viên commit code lên nhánh riêng (ví dụ: <code>feature/prim-kruskal</code>), test chạy thử không có lỗi mới được gửi Pull Request gộp vào nhánh chính <code>main</code>.",
         body_style
     ))
