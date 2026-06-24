@@ -1,0 +1,15 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Temporary text files
+Tai_lieu_Ly_thuyet_CTRR.txt
+Ma_nguon_Giai_thuat_CTRR.txt
+
+# Editor / System files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
