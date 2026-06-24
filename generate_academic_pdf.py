@@ -11,9 +11,8 @@ def format_code_to_html(code_text):
     escaped = html.escape(code_text)
     lines = []
     for line in escaped.splitlines():
-        leading_spaces = len(line) - len(line.lstrip(' '))
-        # Convert leading spaces to HTML non-breaking spaces
-        line_formatted = '&nbsp;' * leading_spaces + line.lstrip(' ')
+        # Replace spaces with non-breaking spaces to preserve formatting in monospaced block
+        line_formatted = line.replace(' ', '\u00A0')
         lines.append(line_formatted)
     return "<br/>".join(lines)
 
@@ -100,21 +99,14 @@ def make_comprehensive_pdf():
         keepWithNext=True
     )
     
-    # Section Sub-Heading (H2) - Teal Background & Border Accents
-    h2_style = ParagraphStyle(
-        'H2',
+    # H2 Text Style (Inside Table Heading wrapper)
+    h2_text_style = ParagraphStyle(
+        'H2Text',
         parent=styles['Normal'],
         fontName=FONT_NAME_BOLD,
-        fontSize=11.5,
-        leading=16,
+        fontSize=11,
+        leading=15,
         textColor=colors.HexColor('#005A70'), # Teal
-        backColor=colors.HexColor('#F0F4F8'), # Light grey-blue background
-        borderColor=colors.HexColor('#005A70'),
-        borderWidth=0.5,
-        borderPadding=6,
-        spaceBefore=14,
-        spaceAfter=8,
-        keepWithNext=True
     )
     
     # Body Text Style
@@ -144,20 +136,14 @@ def make_comprehensive_pdf():
         spaceAfter=4
     )
     
-    # Math & Callout Box Style
-    callout_style = ParagraphStyle(
-        'Callout',
+    # Math & Callout Box Text Style (Inside Table wrapper)
+    callout_text_style = ParagraphStyle(
+        'CalloutText',
         parent=styles['Normal'],
         fontName=FONT_NAME,
         fontSize=9.5,
         leading=14,
         textColor=colors.HexColor('#2D3748'),
-        backColor=colors.HexColor('#FFF9E6'), # Light cream/yellow
-        borderColor=colors.HexColor('#FFE0B2'), # Orange/yellow border
-        borderWidth=1,
-        borderPadding=8,
-        spaceBefore=6,
-        spaceAfter=10
     )
     
     # Code Title Style
@@ -173,17 +159,14 @@ def make_comprehensive_pdf():
         keepWithNext=True
     )
 
-    # Monospaced Code Block Style
-    code_style = ParagraphStyle(
-        'CodeStyle',
+    # Monospaced Code Block Text Style (Inside Table wrapper)
+    code_text_style = ParagraphStyle(
+        'CodeText',
         parent=styles['Normal'],
         fontName=FONT_MONO,
         fontSize=8.5,
         leading=11.5,
         textColor=colors.HexColor('#F8F9FA'), # White text
-        backColor=colors.HexColor('#1E1E1E'), # Dark grey/black background
-        borderPadding=10,
-        spaceAfter=12
     )
     
     # Table Content Styles
@@ -212,6 +195,59 @@ def make_comprehensive_pdf():
         textColor=colors.white
     )
     
+    # ----------------------------------------------------
+    # TABLE WRAPPER HELPER FUNCTIONS (PREVENT OVERLAPS)
+    # ----------------------------------------------------
+    
+    def make_h2_heading(text):
+        p = Paragraph(text, h2_text_style)
+        t = Table([[p]], colWidths=[487.27])
+        t.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F0F4F8')),
+            ('LINELEFT', (0,0), (-1,-1), 3, colors.HexColor('#005A70')), # Left Teal Border Accent
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('TOPPADDING', (0,0), (-1,-1), 5),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+            ('LEFTPADDING', (0,0), (-1,-1), 8),
+            ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ]))
+        t.spaceBefore = 12
+        t.spaceAfter = 8
+        t.keepWithNext = True
+        return t
+
+    def make_callout_box(text):
+        p = Paragraph(text, callout_text_style)
+        t = Table([[p]], colWidths=[487.27])
+        t.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#FFF9E6')),
+            ('BOX', (0,0), (-1,-1), 0.5, colors.HexColor('#FFE0B2')),
+            ('VALIGN', (0,0), (-1,-1), 'TOP'),
+            ('TOPPADDING', (0,0), (-1,-1), 8),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+            ('LEFTPADDING', (0,0), (-1,-1), 10),
+            ('RIGHTPADDING', (0,0), (-1,-1), 10),
+        ]))
+        t.spaceBefore = 6
+        t.spaceAfter = 10
+        return t
+
+    def make_code_block(code_text):
+        formatted_html = format_code_to_html(code_text)
+        p = Paragraph(formatted_html, code_text_style)
+        t = Table([[p]], colWidths=[487.27])
+        t.setStyle(TableStyle([
+            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#1E1E1E')),
+            ('VALIGN', (0,0), (-1,-1), 'TOP'),
+            ('TOPPADDING', (0,0), (-1,-1), 10),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+            ('LEFTPADDING', (0,0), (-1,-1), 10),
+            ('RIGHTPADDING', (0,0), (-1,-1), 10),
+        ]))
+        t.spaceBefore = 6
+        t.spaceAfter = 12
+        return t
+
     story = []
     
     # ----------------------------------------------------
@@ -271,7 +307,7 @@ def make_comprehensive_pdf():
     
     story.append(Paragraph("II. PHÂN TÍCH TOÁN HỌC & HƯỚNG DẪN CÀI ĐẶT 9 GIẢI THUẬT CỐT LÕI", h1_style))
     
-    story.append(Paragraph("1. Duyệt đồ thị theo chiều rộng (BFS)", h2_style))
+    story.append(make_h2_heading("1. Duyệt đồ thị theo chiều rộng (BFS)"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> BFS hoạt động theo nguyên lý loang đều. Từ đỉnh nguồn s, thuật toán duyệt qua các đỉnh kề trực tiếp "
         "của s, sau đó mới di chuyển sang các đỉnh kề có khoảng cách xa hơn. Thuật toán sử dụng cấu trúc dữ liệu <b>Hàng đợi (Queue)</b> "
@@ -285,7 +321,7 @@ def make_comprehensive_pdf():
         "Hàng đợi Q ban đầu chứa s. Ở mỗi bước, lấy u ra khỏi đầu Q. Với mỗi v ∈ Adj(u):<br/>"
         "Nếu visited[v] == False ⇒ visited[v] = True, đẩy v vào cuối Q, ghi nhận cạnh (u, v) thuộc cây duyệt BFS."
     )
-    story.append(Paragraph(bfs_math, callout_style))
+    story.append(make_callout_box(bfs_math))
     
     code_bfs = (
         "from collections import deque\n\n"
@@ -306,7 +342,7 @@ def make_comprehensive_pdf():
         "    return visited, traversal_edges"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Pure BFS):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_bfs), code_style))
+    story.append(make_code_block(code_bfs))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -326,10 +362,10 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> Tốt nhất = Xấu nhất = O(V + E) vì thuật toán phải kiểm tra mọi đỉnh và mọi cạnh kề.<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V) để lưu trữ hàng đợi Q và tập hợp visited_set chứa tối đa V đỉnh."
     )
-    story.append(Paragraph(bfs_comp, callout_style))
+    story.append(make_callout_box(bfs_comp))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("2. Duyệt đồ thị theo chiều sâu (DFS)", h2_style))
+    story.append(make_h2_heading("2. Duyệt đồ thị theo chiều sâu (DFS)"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> DFS đi theo nguyên lý tìm kiếm ưu tiên chiều sâu. Xuất phát từ một đỉnh nguồn s, thuật toán chọn "
         "đi xa nhất có thể dọc theo mỗi nhánh của đồ thị trước khi thực hiện quay lui (Backtracking). Thuật toán sử dụng cơ chế "
@@ -343,7 +379,7 @@ def make_comprehensive_pdf():
         "Định nghĩa hàm đệ quy DFS(u): đánh dấu visited[u] = True. Với mỗi v ∈ Adj(u) sao cho visited[v] == False,<br/>"
         "ghi nhận cạnh (u, v) thuộc cây duyệt DFS, sau đó gọi đệ quy DFS(v)."
     )
-    story.append(Paragraph(dfs_math, callout_style))
+    story.append(make_callout_box(dfs_math))
     
     code_dfs = (
         "def dfs(graph, start):\n"
@@ -364,7 +400,7 @@ def make_comprehensive_pdf():
         "    return visited, traversal_edges"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Pure DFS):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_dfs), code_style))
+    story.append(make_code_block(code_dfs))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -383,10 +419,10 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> Tốt nhất = Xấu nhất = O(V + E) do phải viếng thăm mọi đỉnh và duyệt qua danh sách kề.<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V) phụ thuộc vào độ sâu tối đa của ngăn xếp đệ quy trong trường hợp đồ thị dạng đường thẳng."
     )
-    story.append(Paragraph(dfs_comp, callout_style))
+    story.append(make_callout_box(dfs_comp))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("3. Kiểm tra đồ thị hai phía (Bipartite Graph Check)", h2_style))
+    story.append(make_h2_heading("3. Kiểm tra đồ thị hai phía (Bipartite Graph Check)"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> Sử dụng giải thuật tô 2 màu (2-Coloring). Ta xuất phát từ một đỉnh chưa tô màu, tô màu 0. "
         "Duyệt qua các đỉnh kề của nó và tô màu nghịch đảo là 1. Nếu phát hiện một đỉnh kề đã được tô màu và màu của nó "
@@ -401,7 +437,7 @@ def make_comprehensive_pdf():
         "Hàm tô màu c: V → {0, 1}. Nếu tồn tại cạnh (u, v) ∈ E sao cho c(u) == c(v) ⇒ đồ thị chứa chu trình lẻ "
         "độ dài 2k + 1 kết nối u, v và đỉnh tổ tiên chung gần nhất."
     )
-    story.append(Paragraph(bip_math, callout_style))
+    story.append(make_callout_box(bip_math))
     
     code_bip = (
         "def check_bipartite(graph):\n"
@@ -433,7 +469,7 @@ def make_comprehensive_pdf():
         "    return True, color"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Bipartite Check):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_bip), code_style))
+    story.append(make_code_block(code_bip))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -452,10 +488,10 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> O(V + E) do duyệt qua các đỉnh và cạnh để tô màu.<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V) để lưu trữ bảng màu và cây khung cha của mảng parent."
     )
-    story.append(Paragraph(bip_comp, callout_style))
+    story.append(make_callout_box(bip_comp))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("4. Tìm đường đi ngắn nhất (Dijkstra)", h2_style))
+    story.append(make_h2_heading("4. Tìm đường đi ngắn nhất (Dijkstra)"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> Dijkstra giải bài toán đường đi ngắn nhất từ một nguồn trên đồ thị có trọng số không âm. "
         "Thuật toán duy trì tập các đỉnh đã tìm ra đường đi ngắn nhất cố định. Ở mỗi bước, chọn một đỉnh u chưa cố định "
@@ -469,7 +505,7 @@ def make_comprehensive_pdf():
         "Nếu d[u] + w(u, v) &lt; d[v] ⇒ Cập nhật d[v] = d[u] + w(u, v) và đặt prev[v] = u.<br/>"
         "Để tối ưu hóa bước tìm min{d[u]}, sử dụng cấu trúc Min-Heap với khóa là d[u]."
     )
-    story.append(Paragraph(dijkstra_math, callout_style))
+    story.append(make_callout_box(dijkstra_math))
     
     code_dijkstra = (
         "import heapq\n\n"
@@ -492,7 +528,7 @@ def make_comprehensive_pdf():
         "    return dist, prev"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Dijkstra):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_dijkstra), code_style))
+    story.append(make_code_block(code_dijkstra))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -512,10 +548,10 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> O(E log V) do mỗi cạnh được nới lỏng tối đa một lần và chi phí heap là log V.<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V) để lưu trữ khoảng cách, vết và cấu trúc dữ liệu của Min-Heap."
     )
-    story.append(Paragraph(dijkstra_comp, callout_style))
+    story.append(make_callout_box(dijkstra_comp))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("5. Cây khung nhỏ nhất - Thuật toán Prim", h2_style))
+    story.append(make_h2_heading("5. Cây khung nhỏ nhất - Thuật toán Prim"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> Thuật toán Prim tiếp cận bài toán tìm cây khung nhỏ nhất (MST) theo hướng duyệt đỉnh. "
         "Bắt đầu từ một đỉnh nguồn bất kỳ, cây khung được mở rộng bằng cách liên tục chọn cạnh có trọng số nhỏ nhất "
@@ -529,7 +565,7 @@ def make_comprehensive_pdf():
         "Tại mỗi bước, chọn cạnh (u, v) ∈ E sao cho u ∈ T, v ∉ T và w(u, v) = min{w(x, y) | x ∈ T, y ∉ T}.<br/>"
         "Đưa v vào T, thêm cạnh (u, v) vào tập cạnh MST. Lặp lại cho đến khi T chứa tất cả các đỉnh."
     )
-    story.append(Paragraph(prim_math, callout_style))
+    story.append(make_callout_box(prim_math))
     
     code_prim = (
         "import heapq\n\n"
@@ -552,7 +588,7 @@ def make_comprehensive_pdf():
         "    return mst, total_weight"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Prim):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_prim), code_style))
+    story.append(make_code_block(code_prim))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -571,10 +607,10 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> O(E log V) vì mỗi đỉnh được duyệt một lần và các cạnh được thêm/bớt khỏi Heap.<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V + E) để lưu trữ thông tin các cạnh kề trong Heap."
     )
-    story.append(Paragraph(prim_comp, callout_style))
+    story.append(make_callout_box(prim_comp))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("6. Cây khung nhỏ nhất - Thuật toán Kruskal", h2_style))
+    story.append(make_h2_heading("6. Cây khung nhỏ nhất - Thuật toán Kruskal"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> Thuật toán Kruskal tiếp cận tìm MST theo hướng duyệt cạnh. Thuật toán sắp xếp toàn bộ cạnh "
         "của đồ thị theo trọng số tăng dần, sau đó duyệt qua từng cạnh để thêm vào cây khung nếu cạnh đó không tạo thành "
@@ -588,7 +624,7 @@ def make_comprehensive_pdf():
         "parent[x] = find(parent[x]) giúp độ sâu cây giảm còn xấp xỉ hằng số.<br/>"
         "Cạnh (u, v) được kết nạp khi và chỉ khi find(u) != find(v). Sau đó, thực hiện union(u, v) bằng cách đặt parent[find(u)] = find(v)."
     )
-    story.append(Paragraph(krus_math, callout_style))
+    story.append(make_callout_box(krus_math))
     
     code_krus = (
         "def kruskal(node_count, edges):\n"
@@ -615,7 +651,7 @@ def make_comprehensive_pdf():
         "    return mst, total_weight"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Kruskal):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_krus), code_style))
+    story.append(make_code_block(code_krus))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -634,10 +670,10 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> O(E log E) phụ thuộc vào thời gian sắp xếp danh sách các cạnh.<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V) để lưu trữ mảng parent quản lý các tập hợp liên thông của DSU."
     )
-    story.append(Paragraph(krus_comp, callout_style))
+    story.append(make_callout_box(krus_comp))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("7. Luồng cực đại trên mạng - Edmonds-Karp", h2_style))
+    story.append(make_h2_heading("7. Luồng cực đại trên mạng - Edmonds-Karp"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> Thuật toán Edmonds-Karp tìm luồng cực đại bằng cách liên tục tìm đường tăng luồng ngắn nhất "
         "từ nguồn s tới đích t trên đồ thị dư bằng thuật toán duyệt BFS. Sau đó, nó nới lỏng luồng bằng giá trị bottleneck "
@@ -651,7 +687,7 @@ def make_comprehensive_pdf():
         "BFS tìm đường đi P từ s đến t có số cạnh ít nhất trên G_f. Bottleneck Δf = min{r(u, v) | (u, v) ∈ P}.<br/>"
         "Với mỗi cạnh (u, v) ∈ P: cập nhật f(u, v) = f(u, v) + Δf và f(v, u) = f(v, u) - Δf."
     )
-    story.append(Paragraph(flow_math, callout_style))
+    story.append(make_callout_box(flow_math))
     
     code_flow = (
         "from collections import deque\n\n"
@@ -699,7 +735,7 @@ def make_comprehensive_pdf():
         "    return max_flow_val, flow"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Edmonds-Karp):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_flow), code_style))
+    story.append(make_code_block(code_flow))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -718,10 +754,10 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> O(V E^2) thời gian. Việc sử dụng BFS đảm bảo số đường tăng luồng tối đa là O(VE), mỗi lần tìm mất O(E).<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V + E) để lưu trữ cấu trúc mạng và các bản đồ luồng/dung lượng cạnh."
     )
-    story.append(Paragraph(flow_comp, callout_style))
+    story.append(make_callout_box(flow_comp))
     story.append(Spacer(1, 10))
     
-    story.append(Paragraph("8. Chu trình Euler - Thuật toán Fleury", h2_style))
+    story.append(make_h2_heading("8. Chu trình Euler - Thuật toán Fleury"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> Thuật toán Fleury xây dựng chu trình Euler bằng cách duyệt tham lam trên các cạnh. "
         "Từ đỉnh hiện tại, ta chọn một cạnh chưa đi qua để di chuyển sang đỉnh tiếp theo. Quy tắc cốt lõi là ta phải **tránh "
@@ -735,7 +771,7 @@ def make_comprehensive_pdf():
         "Fleury kiểm tra tính cầu bằng cách chạy DFS đếm số đỉnh có thể đi tới trước và sau khi xóa cạnh tạm thời.<br/>"
         "Nếu count_before &gt; count_after ⇒ e là cầu. Ta chỉ đi qua e khi bậc của u bằng 1."
     )
-    story.append(Paragraph(fleury_math, callout_style))
+    story.append(make_callout_box(fleury_math))
     
     code_fleury = (
         "# Phuong thuc bo tro kiem tra canh cau cua Thanh vien 5\n"
@@ -754,13 +790,13 @@ def make_comprehensive_pdf():
         "    return count1 > count2"
     )
     story.append(Paragraph("Mã nguồn thuật toán kiểm tra cầu (Fleury Helper):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_fleury), code_style))
+    story.append(make_code_block(code_fleury))
     story.append(PageBreak())
     
     # ----------------------------------------------------
     # PAGE 10: ALGORITHM 9: HIERHOLZER & DETAILS
     # ----------------------------------------------------
-    story.append(Paragraph("9. Chu trình Euler - Thuật toán Hierholzer", h2_style))
+    story.append(make_h2_heading("9. Chu trình Euler - Thuật toán Hierholzer"))
     story.append(Paragraph(
         "<b>Ý tưởng cốt lõi:</b> Hierholzer là một giải thuật cực kỳ hiệu quả để tìm chu trình/đường đi Euler bằng cách "
         "lồng ghép các chu trình con đơn giản. Xuất phát từ một đỉnh, ta đi tự do qua các cạnh chưa duyệt đến khi tạo thành "
@@ -775,7 +811,7 @@ def make_comprehensive_pdf():
         "sẽ quay về đỉnh xuất phát ban đầu tạo thành chu trình khép kín. Các cạnh còn dư trên đồ thị sẽ tạo thành "
         "các chu trình con liên kết với chu trình chính. Thuật toán hoạt động trong thời gian tuyến tính O(E)."
     )
-    story.append(Paragraph(hier_math, callout_style))
+    story.append(make_callout_box(hier_math))
     
     code_hier = (
         "def hierholzer(graph, start):\n"
@@ -796,7 +832,7 @@ def make_comprehensive_pdf():
         "    return circuit[::-1]"
     )
     story.append(Paragraph("Mã nguồn thuật toán thuần (Hierholzer):", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_hier), code_style))
+    story.append(make_code_block(code_hier))
     
     hier_explain = (
         "<b>Giải thích chi tiết mã nguồn:</b><br/>"
@@ -812,7 +848,7 @@ def make_comprehensive_pdf():
         "• <b>Thời gian (Time Complexity):</b> O(E) do duyệt qua mỗi cạnh đúng một lần để thêm/xóa.<br/>"
         "• <b>Không gian (Space Complexity):</b> O(V + E) để lưu trữ bản sao danh sách kề và ngăn xếp Stack."
     )
-    story.append(Paragraph(hier_comp, callout_style))
+    story.append(make_callout_box(hier_comp))
     story.append(PageBreak())
     
     # ----------------------------------------------------
@@ -888,7 +924,7 @@ def make_comprehensive_pdf():
     story.append(Spacer(1, 15))
     
     story.append(Paragraph("IV. QUY TRÌNH PHỐI HỢP, PIPELINE CI & TIÊU CHUẨN HOÀN THÀNH", h1_style))
-    story.append(Paragraph("1. Quy trình chuyển đổi từ mã nguồn thuần sang Hoạt họa Generator", h2_style))
+    story.append(make_h2_heading("1. Quy trình chuyển đổi từ mã nguồn thuần sang Hoạt họa Generator"))
     story.append(Paragraph(
         "Để giao diện không bị treo khi thực thi thuật toán lâu, hệ thống không sử dụng vòng lặp vô hạn hay hàm trì hoãn "
         "đồng bộ (<code>time.sleep</code>). Thay vào đó, mỗi thuật toán thuần được chuyển đổi sang dạng <b>Generator</b> "
@@ -917,9 +953,9 @@ def make_comprehensive_pdf():
         "    yield \"FINISHED\", {\"dist\": dist, \"prev\": prev}"
     )
     story.append(Paragraph("Minh họa mẫu chuyển đổi sang Generator:", code_title_style))
-    story.append(Paragraph(format_code_to_html(code_yield), code_style))
+    story.append(make_code_block(code_yield))
     
-    story.append(Paragraph("2. Cơ chế tích hợp hoạt họa với vòng lặp bất đồng bộ của tkinter (after)", h2_style))
+    story.append(make_h2_heading("2. Cơ chế tích hợp hoạt họa với vòng lặp bất đồng bộ của tkinter (after)"))
     story.append(Paragraph(
         "Giao diện Tkinter chạy đơn luồng. Để thực hiện vẽ hoạt họa từng bước, GUI sẽ khởi tạo Generator của thuật toán "
         "và đăng ký một hàm lặp lại sau mỗi khoảng thời gian <code>delay</code> thông qua hàm <code>tkinter.after</code>:",
@@ -941,9 +977,9 @@ def make_comprehensive_pdf():
         "    except StopIteration:\n"
         "        self.log(\"Thuat toan ket thuc.\")"
     )
-    story.append(Paragraph(format_code_to_html(code_after), code_style))
+    story.append(make_code_block(code_after))
     
-    story.append(Paragraph("3. Tiêu chuẩn hoàn thành (Definition of Done - DoD)", h2_style))
+    story.append(make_h2_heading("3. Tiêu chuẩn hoàn thành (Definition of Done - DoD)"))
     story.append(Paragraph(
         "Một phần việc được coi là hoàn thành 100% khi đáp ứng đầy đủ các tiêu chuẩn học thuật và lập trình sau:<br/>"
         "• <b>Tính nhất quán lý thuyết (Deterministic):</b> BFS/DFS và các lựa chọn đỉnh lân cận bắt buộc phải thực hiện sắp xếp nhãn tăng dần trước khi đưa vào hàng đợi/ngăn xếp. Kết quả chạy trên máy phải trùng khớp tuyệt đối với việc làm bài tập bằng tay.<br/>"
