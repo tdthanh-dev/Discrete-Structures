@@ -4,6 +4,29 @@ Hệ thống giáo trình trực quan hỗ trợ giảng dạy và học tập m
 
 ---
 
+## 📋 Bảng Đối Chiếu Đáp Ứng Yêu Cầu (Requirements Checklist)
+
+Dưới đây là bảng thống kê chi tiết sự đáp ứng đầy đủ **100% yêu cầu đề bài** của dự án:
+
+| STT | Yêu Cầu Theo Đề Bài | Trạng Thái | Tệp Nguồn & Chi Tiết Cài Đặt |
+| :--- | :--- | :--- | :--- |
+| **I** | **PHẦN CƠ BẢN** | | |
+| **1** | **Vẽ đồ thị trực quan** | **Đã đáp ứng** | Thực hiện trong `gui.py`. Người dùng có thể click chuột trái để tạo đỉnh, click liên tiếp 2 đỉnh để tạo cạnh (nhập trọng số tự do qua dialog) và click chuột phải để xóa đỉnh/cạnh. |
+| **2** | **Lưu đồ thị** | **Đã đáp ứng** | Hỗ trợ lưu cấu trúc đồ thị xuống tệp `graph.json` và nạp lại cấu trúc đồ thị từ file JSON bằng các nút bấm trên giao diện (`Luu JSON`, `Tai tu JSON`). |
+| **3** | **Tìm đường đi ngắn nhất** | **Đã đáp ứng** | Sử dụng thuật toán **Dijkstra** cài đặt trong `algorithms/dijkstra.py` với cấu trúc hàng đợi ưu tiên (Priority Queue/Min-Heap) để tối ưu hóa hiệu năng. |
+| **4** | **Duyệt đồ thị: BFS & DFS** | **Đã đáp ứng** | Cài đặt trong `algorithms/traversal.py`. Duyệt đồ thị theo chiều rộng (BFS) dùng Queue và chiều sâu (DFS) dùng Stack/Đệ quy, hỗ trợ in ra vết thứ tự duyệt. |
+| **5** | **Kiểm tra đồ thị 2 phía** | **Đã đáp ứng** | Cài đặt trong `algorithms/bipartite.py` bằng giải thuật Tô 2 màu (2-Coloring). Nếu phát hiện xung đột màu (không là đồ thị 2 phía), hệ thống sẽ truy vết ngược lại chu trình lẻ (odd cycle) làm minh chứng. |
+| **6** | **Chuyển đổi biểu diễn đồ thị**<br>*(Ma trận kề $\leftrightarrow$ Danh sách kề $\leftrightarrow$ Danh sách cạnh)* | **Đã đáp ứng** | Cài đặt trong `utils/conversions.py`. Hỗ trợ chuyển đổi qua lại mượt mà giữa cả 3 phương pháp biểu diễn cho cả đồ thị **vô hướng** và **có hướng** (nhấn nút `Bieu dien Do thi` để xem). |
+| **II** | **PHẦN NÂNG CAO** | | |
+| **7.1** | **Trực quan hóa thuật toán Prim** | **Đã đáp ứng** | Định nghĩa thuật toán Prim trong `algorithms/prim.py`. Giao diện hỗ trợ chạy mô phỏng từng bước (màu xanh/đỏ cho các cạnh đang xét và cạnh thuộc MST). |
+| **7.2** | **Trực quan hóa thuật toán Kruskal** | **Đã đáp ứng** | Định nghĩa thuật toán Kruskal trong `algorithms/kruskal.py` dùng cấu trúc DSU. Trực quan hóa trên GUI thể hiện việc sắp xếp cạnh và duyệt chọn/loại bỏ cạnh. |
+| **7.3** | **Trực quan hóa thuật toán Ford-Fulkerson** | **Đã đáp ứng** | Cài đặt thuật toán **Edmonds-Karp** (phiên bản tối ưu của Ford-Fulkerson dùng BFS tìm đường tăng luồng trên đồ thị dư) trong `algorithms/max_flow.py`. Giao diện trực quan hóa dòng luồng dạng `flow/capacity` chạy qua từng cạnh và highlight đường tăng luồng tìm được. |
+| **7.4** | **Trực quan hóa thuật toán Fleury** | **Đã đáp ứng** | Cài đặt giải thuật Fleury tìm đường đi/chu trình Euler trong `algorithms/fleury.py`. Trực quan hóa từng bước đi và highlight việc kiểm tra/tránh đi qua cạnh cầu (bridge). |
+| **7.5** | **Trực quan hóa thuật toán Hierholzer** | **Đã đáp ứng** | Cài đặt thuật toán Hierholzer tìm đường đi/chu trình Euler trong `algorithms/hierholzer.py` với độ phức tạp tối ưu $O(E)$. Trực quan hóa quá trình push/pop các đỉnh thông qua ngăn xếp Stack của thuật toán. |
+
+---
+
+
 ## 🚀 Các Tính Năng Chính
 
 1. **Vẽ đồ thị tương tác:**
