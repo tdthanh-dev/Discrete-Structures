@@ -13,3 +13,7 @@ Ma_nguon_Giai_thuat_CTRR.txt
 .idea/
 .DS_Store
 Thumbs.db
+
+# Generated PDF Documents
+*.pdf
+
