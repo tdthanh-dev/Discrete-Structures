@@ -196,7 +196,6 @@ def make_pdf():
     
     story.append(Spacer(1, 5))
     story.append(Paragraph("TÀI LIỆU KHẢO SÁT LÝ THUYẾT & CHẠY TỪNG BƯỚC GIẢI THUẬT ĐỒ THỊ", title_style))
-    story.append(Paragraph("Hệ thống giáo trình trực quan hỗ trợ học tập môn Cấu trúc rời rạc / Lý thuyết đồ thị", subtitle_style))
     story.append(Spacer(1, 5))
     
     # ------------------ PHẦN 1: CÁC PHƯƠNG PHÁP BIỂU DIỄN ------------------
