@@ -17,3 +17,5 @@ Thumbs.db
 # Generated PDF Documents
 *.pdf
 
+# Document generation scripts
+generate_*.py
