@@ -19,3 +19,7 @@ Thumbs.db
 
 # Document generation scripts
 generate_*.py
+
+# Report builder (contains academic chapters, PDF compilers and assets)
+report_builder/
+
